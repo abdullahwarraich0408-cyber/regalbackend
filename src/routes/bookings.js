@@ -3,6 +3,10 @@ import { z } from "zod";
 import { bookingSchema } from "../validators/booking-schema.js";
 import { bookingStorage } from "../storage/booking-storage.js";
 import { eventTypeStorage } from "../storage/event-type-storage.js";
+import {
+  sendBookingConfirmationToCustomer,
+  sendBookingNotificationToAdmin,
+} from "../services/email.js";
 
 const router = Router();
 
@@ -46,6 +50,14 @@ router.post("/", async (req, res) => {
   }
 
   const record = await bookingStorage.create(parsed.data);
+
+  // Send emails (non-blocking — don't fail the request if email fails)
+  Promise.all([
+    sendBookingConfirmationToCustomer(record),
+    sendBookingNotificationToAdmin(record),
+  ]).catch((err) => {
+    console.error("[email] failed to send booking emails:", err.message);
+  });
 
   return res.status(201).json({
     id: record.id,

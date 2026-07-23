@@ -17,10 +17,21 @@ const app = express();
 const port = Number(process.env.PORT) || 3001;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsDir = path.join(__dirname, "..", "uploads");
-const allowedOrigins = [
-  process.env.CLIENT_ORIGIN || "http://localhost:8080",
-  process.env.ADMIN_ORIGIN || "http://localhost:3000",
+const defaultOrigins = [
+  "http://localhost:8080",
+  "http://localhost:8081",
+  "http://localhost:3000",
+  "https://regalknotevents.co.uk",
+  "https://www.regalknotevents.co.uk",
+  "https://admin.regalknotevents.co.uk",
 ];
+
+const envOrigins = [
+  ...(process.env.CLIENT_ORIGIN ? process.env.CLIENT_ORIGIN.split(",") : []),
+  ...(process.env.ADMIN_ORIGIN ? process.env.ADMIN_ORIGIN.split(",") : []),
+].map((o) => o.trim()).filter(Boolean);
+
+const allowedOrigins = Array.from(new Set([...defaultOrigins, ...envOrigins]));
 
 app.use(
   cors({

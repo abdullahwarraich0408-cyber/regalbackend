@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { enquirySchema, enquiryStatusSchema } from "../validators/enquiry-schema.js";
 import { enquiryStorage } from "../storage/enquiry-storage.js";
+import { sendEnquiryNotificationToAdmin } from "../services/email.js";
 
 const router = Router();
 
@@ -28,6 +29,11 @@ router.post("/", async (req, res) => {
   }
 
   const record = await enquiryStorage.create(parsed.data);
+
+  // Notify admin (non-blocking)
+  sendEnquiryNotificationToAdmin(record).catch((err) => {
+    console.error("[email] failed to send enquiry notification:", err.message);
+  });
 
   return res.status(201).json({
     id: record.id,
