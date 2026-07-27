@@ -17,6 +17,7 @@ export const serviceSchema = z.object({
   shortDescription: z.string().trim().min(10).max(300),
   longDescription: z.string().trim().min(20).max(2000),
   highlights: z.array(z.string().trim().min(2).max(120)).default([]),
+  imageUrl: z.string().trim().max(2000).optional().or(z.literal("")),
   published: z.boolean().default(true),
   sortOrder: z.number().int().min(0).default(0),
 });

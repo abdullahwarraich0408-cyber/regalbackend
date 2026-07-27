@@ -29,6 +29,8 @@ export const demoServices = [
       "Lead Stylist Coordination",
       "Florals & Candlelight",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 1,
   },
@@ -47,6 +49,8 @@ export const demoServices = [
       "Coordinated Dessert Tables",
       "Theme Lighting Setup",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 2,
   },
@@ -65,6 +69,8 @@ export const demoServices = [
       "Organic Sage Panel Sets",
       "Coordinated Linens",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1515934751635-c81c6bc9efc7?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 3,
   },
@@ -83,6 +89,8 @@ export const demoServices = [
       "Accent Furniture Sourcing",
       "Entrance Signage & Floral Trims",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 4,
   },
@@ -101,6 +109,8 @@ export const demoServices = [
       "Custom Fabrications",
       "Bespoke Prop Sourcing",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1464366400600-664085567c68?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 5,
   },
@@ -119,6 +129,8 @@ export const demoServices = [
       "Metallic Chrome Accents",
       "Organic Column Structures",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 6,
   },
@@ -137,6 +149,8 @@ export const demoServices = [
       "Floral Walls & Fabric Drapes",
       "Custom Logo Board Trims",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 7,
   },
@@ -155,6 +169,8 @@ export const demoServices = [
       "Candlelight Composition",
       "Menu Card Layering",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 8,
   },
@@ -173,6 +189,8 @@ export const demoServices = [
       "Lounge Floral Installs",
       "Bespoke Bouquets",
     ],
+    imageUrl:
+      "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 9,
   },

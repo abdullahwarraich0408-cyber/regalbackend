@@ -42,10 +42,10 @@ class ServiceStorage {
     await pool.execute(
       `INSERT INTO services (
         id, slug, title, icon, best_for, short_description, long_description,
-        highlights, published, sort_order
+        highlights, image_url, published, sort_order
       ) VALUES (
         :id, :slug, :title, :icon, :best_for, :short_description, :long_description,
-        :highlights, :published, :sort_order
+        :highlights, :image_url, :published, :sort_order
       )`,
       { id, ...columns }
     );
@@ -67,6 +67,7 @@ class ServiceStorage {
       shortDescription: input.shortDescription ?? current.short,
       longDescription: input.longDescription ?? current.long,
       highlights: input.highlights ?? current.highlights,
+      imageUrl: input.imageUrl ?? current.imageUrl,
       published: input.published ?? current.published,
       sortOrder: input.sortOrder ?? current.sortOrder,
     };
@@ -77,7 +78,8 @@ class ServiceStorage {
       `UPDATE services
        SET slug = :slug, title = :title, icon = :icon, best_for = :best_for,
            short_description = :short_description, long_description = :long_description,
-           highlights = :highlights, published = :published, sort_order = :sort_order
+           highlights = :highlights, image_url = :image_url, published = :published,
+           sort_order = :sort_order
        WHERE id = :id`,
       { id, ...columns }
     );

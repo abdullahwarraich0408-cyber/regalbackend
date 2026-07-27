@@ -5,10 +5,23 @@ import {
   getCachedInstagramFeed,
   getPostByShortcode,
 } from "../services/instagram-feed.js";
+import { instagramPostStorage } from "../storage/instagram-post-storage.js";
 
 const router = Router();
 
 router.get("/feed", async (_req, res) => {
+  try {
+    const manualFeed = await instagramPostStorage.toFeedResponse();
+    if (manualFeed.posts.length > 0) {
+      return res.json(manualFeed);
+    }
+  } catch (error) {
+    console.warn(
+      "[instagram] manual gallery unavailable:",
+      error instanceof Error ? error.message : error
+    );
+  }
+
   try {
     const feed = await fetchInstagramFeed();
     return res.json(feed);
@@ -26,6 +39,8 @@ router.get("/feed", async (_req, res) => {
     return res.status(503).json({
       error: error instanceof Error ? error.message : "Instagram feed unavailable",
       posts: [],
+      username: process.env.INSTAGRAM_USERNAME || "regal.knot.events",
+      followerCount: 0,
     });
   }
 });

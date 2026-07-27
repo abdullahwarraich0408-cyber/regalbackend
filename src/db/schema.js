@@ -53,6 +53,7 @@ const createServicesTable = `
     short_description TEXT NOT NULL,
     long_description TEXT NOT NULL,
     highlights JSON NOT NULL,
+    image_url TEXT NOT NULL DEFAULT '',
     published TINYINT(1) NOT NULL DEFAULT 1,
     sort_order INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -118,6 +119,26 @@ const createEnquiriesTable = `
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 `;
 
+const createInstagramPostsTable = `
+  CREATE TABLE IF NOT EXISTS instagram_posts (
+    id VARCHAR(36) PRIMARY KEY,
+    caption TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    video_url TEXT NULL,
+    post_url VARCHAR(500) NOT NULL DEFAULT '',
+    shortcode VARCHAR(64) NOT NULL DEFAULT '',
+    likes INT NOT NULL DEFAULT 0,
+    is_video TINYINT(1) NOT NULL DEFAULT 0,
+    is_reel TINYINT(1) NOT NULL DEFAULT 0,
+    published TINYINT(1) NOT NULL DEFAULT 1,
+    sort_order INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_instagram_posts_published (published),
+    INDEX idx_instagram_posts_sort_order (sort_order)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+`;
+
 export async function initDatabase() {
   const connection = await pool.getConnection();
 
@@ -128,12 +149,28 @@ export async function initDatabase() {
     await connection.query(createPortfolioTable);
     await connection.query(createTestimonialsTable);
     await connection.query(createEnquiriesTable);
+    await connection.query(createInstagramPostsTable);
+
+    // Existing installs: add service image column if missing
+    try {
+      await connection.query(
+        "ALTER TABLE services ADD COLUMN image_url TEXT NOT NULL DEFAULT '' AFTER highlights"
+      );
+      console.info("[db] services.image_url column added");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!message.includes("Duplicate column")) {
+        console.warn("[db] services.image_url migration:", message);
+      }
+    }
+
     console.info("[db] bookings table ready");
     console.info("[db] event_types table ready");
     console.info("[db] services table ready");
     console.info("[db] portfolio table ready");
     console.info("[db] testimonials table ready");
     console.info("[db] enquiries table ready");
+    console.info("[db] instagram_posts table ready");
   } finally {
     connection.release();
   }

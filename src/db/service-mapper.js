@@ -11,6 +11,7 @@ export function rowToService(row) {
       typeof row.highlights === "string"
         ? JSON.parse(row.highlights)
         : row.highlights ?? [],
+    imageUrl: row.image_url ?? "",
     published: Boolean(row.published),
     sortOrder: row.sort_order,
     createdAt: new Date(row.created_at).toISOString(),
@@ -27,6 +28,7 @@ export function inputToColumns(input) {
     short_description: input.shortDescription,
     long_description: input.longDescription,
     highlights: JSON.stringify(input.highlights ?? []),
+    image_url: input.imageUrl ?? "",
     published: input.published ? 1 : 0,
     sort_order: input.sortOrder ?? 0,
   };

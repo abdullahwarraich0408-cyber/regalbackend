@@ -8,6 +8,7 @@ import servicesRouter from "./routes/services.js";
 import testimonialsRouter from "./routes/testimonials.js";
 import enquiriesRouter from "./routes/enquiries.js";
 import instagramRouter from "./routes/instagram.js";
+import instagramPostsRouter from "./routes/instagram-posts.js";
 import uploadsRouter from "./routes/uploads.js";
 import { initDatabase, verifyDatabaseConnection } from "./db/schema.js";
 import path from "path";
@@ -68,6 +69,7 @@ app.use("/api/event-types", eventTypesRouter);
 app.use("/api/services", servicesRouter);
 app.use("/api/testimonials", testimonialsRouter);
 app.use("/api/enquiries", enquiriesRouter);
+app.use("/api/instagram-posts", instagramPostsRouter);
 app.use("/api/instagram", instagramRouter);
 app.use("/api/uploads", uploadsRouter);
 
