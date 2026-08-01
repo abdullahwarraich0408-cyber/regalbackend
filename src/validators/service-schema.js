@@ -9,15 +9,25 @@ export function slugify(value) {
     .replace(/^-+|-+$/g, "");
 }
 
+const optionalSlug = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().trim().min(2).max(80).optional()
+);
+
+const optionalImageUrl = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().trim().max(2000).optional()
+);
+
 export const serviceSchema = z.object({
-  slug: z.string().trim().min(2).max(80).optional(),
+  slug: optionalSlug,
   title: z.string().trim().min(2).max(120),
   icon: z.enum(serviceIcons).default("sparkles"),
   bestFor: z.string().trim().min(2).max(120),
   shortDescription: z.string().trim().min(10).max(300),
   longDescription: z.string().trim().min(20).max(2000),
   highlights: z.array(z.string().trim().min(2).max(120)).default([]),
-  imageUrl: z.string().trim().max(2000).optional().or(z.literal("")),
+  imageUrl: optionalImageUrl,
   published: z.boolean().default(true),
   sortOrder: z.number().int().min(0).default(0),
 });
