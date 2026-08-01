@@ -25,6 +25,7 @@ const defaultOrigins = [
   "https://regalknotevents.co.uk",
   "https://www.regalknotevents.co.uk",
   "https://admin.regalknotevents.co.uk",
+  "https://regaladmin.vercel.app",
 ];
 
 const envOrigins = [
@@ -41,7 +42,9 @@ app.use(
         callback(null, true);
         return;
       }
-      callback(new Error("Not allowed by CORS"));
+      // Reject without throwing — a thrown Error becomes HTTP 500 and
+      // the browser only reports a generic "Failed to fetch".
+      callback(null, false);
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   })
