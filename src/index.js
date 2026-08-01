@@ -26,6 +26,7 @@ const defaultOrigins = [
   "https://www.regalknotevents.co.uk",
   "https://admin.regalknotevents.co.uk",
   "https://regaladmin.vercel.app",
+  "https://regel-omega.vercel.app",
 ];
 
 const envOrigins = [
