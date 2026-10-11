@@ -1,4 +1,6 @@
 import { pool } from "./pool.js";
+import crypto from "crypto";
+import { hashPassword } from "../services/auth.js";
 
 const createBookingsTable = `
   CREATE TABLE IF NOT EXISTS bookings (
@@ -71,6 +73,7 @@ const createPortfolioTable = `
     category ENUM('Weddings', 'Private Events', 'Corporate') NOT NULL,
     cover_image_url TEXT NOT NULL,
     gallery JSON NOT NULL,
+    videos JSON NULL,
     client_name VARCHAR(120) NOT NULL DEFAULT '',
     description TEXT NOT NULL,
     highlights JSON NOT NULL,
@@ -139,6 +142,18 @@ const createInstagramPostsTable = `
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 `;
 
+const createAdminUsersTable = `
+  CREATE TABLE IF NOT EXISTS admin_users (
+    id VARCHAR(36) PRIMARY KEY,
+    username VARCHAR(120) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    salt VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_admin_users_username (username)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+`;
+
 export async function initDatabase() {
   const connection = await pool.getConnection();
 
@@ -150,6 +165,19 @@ export async function initDatabase() {
     await connection.query(createTestimonialsTable);
     await connection.query(createEnquiriesTable);
     await connection.query(createInstagramPostsTable);
+    await connection.query(createAdminUsersTable);
+
+    // Seed default admin user if none exists
+    const [existingAdmins] = await connection.query("SELECT id FROM admin_users LIMIT 1");
+    if (existingAdmins.length === 0) {
+      const { hash, salt } = hashPassword("Password@123");
+      const id = crypto.randomUUID();
+      await connection.query(
+        "INSERT INTO admin_users (id, username, password_hash, salt) VALUES (?, ?, ?, ?)",
+        [id, "admin.regalknotevents.co.uk", hash, salt]
+      );
+      console.info("[db] seeded initial admin user: admin.regalknotevents.co.uk");
+    }
 
     // Existing installs: add service image column if missing
     try {
@@ -164,6 +192,19 @@ export async function initDatabase() {
       }
     }
 
+    // Existing installs: add portfolio videos column if missing
+    try {
+      await connection.query(
+        "ALTER TABLE portfolio ADD COLUMN videos JSON NULL AFTER gallery"
+      );
+      console.info("[db] portfolio.videos column added");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!message.includes("Duplicate column")) {
+        console.warn("[db] portfolio.videos migration:", message);
+      }
+    }
+
     console.info("[db] bookings table ready");
     console.info("[db] event_types table ready");
     console.info("[db] services table ready");
@@ -171,6 +212,7 @@ export async function initDatabase() {
     console.info("[db] testimonials table ready");
     console.info("[db] enquiries table ready");
     console.info("[db] instagram_posts table ready");
+    console.info("[db] admin_users table ready");
   } finally {
     connection.release();
   }

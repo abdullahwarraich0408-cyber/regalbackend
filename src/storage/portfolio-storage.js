@@ -47,10 +47,10 @@ class PortfolioStorage {
 
     await pool.execute(
       `INSERT INTO portfolio (
-        id, slug, title, category, cover_image_url, gallery, client_name,
+        id, slug, title, category, cover_image_url, gallery, videos, client_name,
         description, highlights, instagram_url, palette, published, sort_order
       ) VALUES (
-        :id, :slug, :title, :category, :cover_image_url, :gallery, :client_name,
+        :id, :slug, :title, :category, :cover_image_url, :gallery, :videos, :client_name,
         :description, :highlights, :instagram_url, :palette, :published, :sort_order
       )`,
       { id, ...columns }
@@ -71,6 +71,7 @@ class PortfolioStorage {
       category: input.category ?? current.category,
       imageUrl: input.imageUrl ?? current.imageUrl,
       gallery: input.gallery ?? current.gallery,
+      videos: input.videos ?? current.videos,
       clientName: input.clientName ?? current.clientName,
       description: input.description ?? current.description,
       highlights: input.highlights ?? current.highlights,
@@ -85,7 +86,7 @@ class PortfolioStorage {
     await pool.execute(
       `UPDATE portfolio
        SET slug = :slug, title = :title, category = :category,
-           cover_image_url = :cover_image_url, gallery = :gallery,
+           cover_image_url = :cover_image_url, gallery = :gallery, videos = :videos,
            client_name = :client_name, description = :description,
            highlights = :highlights, instagram_url = :instagram_url,
            palette = :palette, published = :published, sort_order = :sort_order

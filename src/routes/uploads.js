@@ -19,6 +19,10 @@ const allowedMimeTypes = new Set([
   "image/png",
   "image/webp",
   "image/gif",
+  "video/mp4",
+  "video/webm",
+  "video/quicktime",
+  "video/x-m4v",
 ]);
 
 const storage = multer.diskStorage({
@@ -27,7 +31,17 @@ const storage = multer.diskStorage({
   },
   filename: (_req, file, callback) => {
     const extension = path.extname(file.originalname).toLowerCase();
-    const safeExtension = [".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(extension)
+    const safeExtension = [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".webp",
+      ".gif",
+      ".mp4",
+      ".webm",
+      ".mov",
+      ".m4v",
+    ].includes(extension)
       ? extension
       : ".jpg";
     callback(null, `${randomUUID()}${safeExtension}`);
@@ -36,20 +50,24 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: (_req, file, callback) => {
     if (allowedMimeTypes.has(file.mimetype)) {
       callback(null, true);
       return;
     }
 
-    callback(new Error("Only JPEG, PNG, WebP, and GIF images are allowed"));
+    callback(
+      new Error(
+        "Only JPEG, PNG, WebP, GIF images and MP4, WebM, MOV videos are allowed"
+      )
+    );
   },
 });
 
 router.post("/", upload.single("file"), (req, res) => {
   if (!req.file) {
-    return res.status(400).json({ error: "No image file provided" });
+    return res.status(400).json({ error: "No media file provided" });
   }
 
   return res.status(201).json({
@@ -62,7 +80,7 @@ router.post("/batch", upload.array("files", 20), (req, res) => {
   const files = req.files ?? [];
 
   if (files.length === 0) {
-    return res.status(400).json({ error: "No image files provided" });
+    return res.status(400).json({ error: "No media files provided" });
   }
 
   return res.status(201).json({
@@ -73,7 +91,7 @@ router.post("/batch", upload.array("files", 20), (req, res) => {
 router.use((error, _req, res, next) => {
   if (error instanceof multer.MulterError) {
     if (error.code === "LIMIT_FILE_SIZE") {
-      return res.status(413).json({ error: "Image must be 10 MB or smaller" });
+      return res.status(413).json({ error: "File must be 100 MB or smaller" });
     }
 
     return res.status(400).json({ error: error.message });

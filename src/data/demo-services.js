@@ -4,13 +4,7 @@ export const serviceIcons = [
   "baby",
   "party-popper",
   "briefcase",
-  "wand-2",
   "sparkles",
-  "calendar",
-  "star",
-  "flower-2",
-  "frame",
-  "utensils",
 ];
 
 export const demoServices = [
@@ -30,7 +24,7 @@ export const demoServices = [
       "Florals & Candlelight",
     ],
     imageUrl:
-      "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 1,
   },
@@ -50,7 +44,7 @@ export const demoServices = [
       "Theme Lighting Setup",
     ],
     imageUrl:
-      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 2,
   },
@@ -70,13 +64,13 @@ export const demoServices = [
       "Coordinated Linens",
     ],
     imageUrl:
-      "https://images.unsplash.com/photo-1515934751635-c81c6bc9efc7?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 3,
   },
   {
     slug: "party-private-events",
-    title: "Parties & Private Events",
+    title: "Parties & Celebrations",
     icon: "party-popper",
     bestFor: "Hosts & private gatherings",
     shortDescription:
@@ -90,108 +84,28 @@ export const demoServices = [
       "Entrance Signage & Floral Trims",
     ],
     imageUrl:
-      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 4,
   },
   {
-    slug: "custom-theme-styling",
-    title: "Custom Theme Styling",
-    icon: "wand-2",
-    bestFor: "Bespoke concepts",
+    slug: "corporate-events",
+    title: "Corporate & Private Events",
+    icon: "briefcase",
+    bestFor: "Corporate & private hosts",
     shortDescription:
-      "Bespoke themes designed end-to-end — from mood board to final setup.",
+      "Brand launches, gala evenings, awards dinners, and executive corporate gatherings.",
     longDescription:
-      "Bring us a feeling, a film, a colour, or a fragment of an idea. We translate it into a cohesive theme with art direction, decor, and styling.",
+      "Polished and professional event design with tailored brand palettes, stage backdrops, and executive dining styling.",
     highlights: [
-      "End-to-End Creative Direction",
-      "Art Direction Mood Boards",
-      "Custom Fabrications",
-      "Bespoke Prop Sourcing",
+      "Branded Stage Backdrops",
+      "Ambient Event Lighting",
+      "Executive Dining Setups",
+      "Full Setup & Pack-Down",
     ],
     imageUrl:
-      "https://images.unsplash.com/photo-1464366400600-664085567c68?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80&auto=format&fit=crop",
     published: true,
     sortOrder: 5,
-  },
-  {
-    slug: "balloon-decoration",
-    title: "Balloon Decoration",
-    icon: "sparkles",
-    bestFor: "Statement moments",
-    shortDescription:
-      "Architectural balloon installations — never the basic arch.",
-    longDescription:
-      "Sculptural garlands, ceiling clouds, organic columns and signature pieces designed to anchor the room and photograph beautifully.",
-    highlights: [
-      "Architectural Organic Arches",
-      "Ceiling Clouds & Garlands",
-      "Metallic Chrome Accents",
-      "Organic Column Structures",
-    ],
-    imageUrl:
-      "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200&q=80&auto=format&fit=crop",
-    published: true,
-    sortOrder: 6,
-  },
-  {
-    slug: "backdrops",
-    title: "Backdrops",
-    icon: "frame",
-    bestFor: "Photo & focal points",
-    shortDescription:
-      "Custom backdrops styled around your colour palette, signage, and theme.",
-    longDescription:
-      "Mesh circles, fluted panels, draped fabric, floral walls, and neon signage — built to anchor the photo moment of the evening.",
-    highlights: [
-      "Fluted Arch Panel Sets",
-      "Mesh Circles & Neon Signs",
-      "Floral Walls & Fabric Drapes",
-      "Custom Logo Board Trims",
-    ],
-    imageUrl:
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&q=80&auto=format&fit=crop",
-    published: true,
-    sortOrder: 7,
-  },
-  {
-    slug: "table-settings",
-    title: "Table Settings",
-    icon: "utensils",
-    bestFor: "Dining experiences",
-    shortDescription:
-      "Tablescapes layered with linen, glassware, candlelight, and considered florals.",
-    longDescription:
-      "Charger plates, napkin folds, menu cards, runners and centrepieces — everything coordinated so the table feels like a single, deliberate composition.",
-    highlights: [
-      "Luxury Linen & Runners",
-      "Charger Plates & Glassware",
-      "Candlelight Composition",
-      "Menu Card Layering",
-    ],
-    imageUrl:
-      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80&auto=format&fit=crop",
-    published: true,
-    sortOrder: 8,
-  },
-  {
-    slug: "floral-arrangements",
-    title: "Floral Arrangements",
-    icon: "flower-2",
-    bestFor: "Florals with intention",
-    shortDescription:
-      "Seasonal, sculpted florals that bring movement and softness to the room.",
-    longDescription:
-      "Centrepieces, aisle florals, installations and bouquets — designed in harmony with your venue's light, scale, and palette.",
-    highlights: [
-      "Centerpiece Styling",
-      "Aisle Ground Meadows",
-      "Lounge Floral Installs",
-      "Bespoke Bouquets",
-    ],
-    imageUrl:
-      "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&q=80&auto=format&fit=crop",
-    published: true,
-    sortOrder: 9,
   },
 ];

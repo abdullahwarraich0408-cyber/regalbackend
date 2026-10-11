@@ -10,12 +10,13 @@ import enquiriesRouter from "./routes/enquiries.js";
 import instagramRouter from "./routes/instagram.js";
 import instagramPostsRouter from "./routes/instagram-posts.js";
 import uploadsRouter from "./routes/uploads.js";
+import authRouter from "./routes/auth.js";
 import { initDatabase, verifyDatabaseConnection } from "./db/schema.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-const port = Number(process.env.PORT) || 3001;
+const port = Number(process.env.PORT) || 5000;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsDir = path.join(__dirname, "..", "uploads");
 const defaultOrigins = [
@@ -53,19 +54,57 @@ app.use(
 app.use(express.json());
 app.use("/uploads", express.static(uploadsDir));
 
-app.get("/health", async (_req, res) => {
+const healthHandler = async (_req, res) => {
+  const startTime = Date.now();
+  let dbStatus = "connected";
+  let dbLatency = null;
+  let dbError = null;
+
   try {
+    const dbStart = Date.now();
     await verifyDatabaseConnection();
-    res.json({ ok: true, service: "regal-knot-backend", database: "connected" });
+    dbLatency = `${Date.now() - dbStart}ms`;
   } catch (error) {
-    res.status(503).json({
-      ok: false,
-      service: "regal-knot-backend",
-      database: "disconnected",
-      error: error instanceof Error ? error.message : "Database unavailable",
-    });
+    dbStatus = "disconnected";
+    dbError = error instanceof Error ? error.message : "Database unavailable";
   }
+
+  const isHealthy = dbStatus === "connected";
+  const statusCode = isHealthy ? 200 : 503;
+
+  res.status(statusCode).json({
+    status: isHealthy ? "healthy" : "unhealthy",
+    ok: isHealthy,
+    service: "regal-knot-backend",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    uptime: `${Math.floor(process.uptime())}s`,
+    environment: process.env.NODE_ENV || "development",
+    database: {
+      status: dbStatus,
+      latency: dbLatency,
+      ...(dbError ? { error: dbError } : {}),
+    },
+    smtp: {
+      configured: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER),
+      host: process.env.SMTP_HOST || "not_configured",
+    },
+    totalResponseTime: `${Date.now() - startTime}ms`,
+  });
+};
+
+app.get("/", (_req, res) => {
+  res.json({
+    service: "Regal Knot Events API",
+    status: "online",
+    message: "Backend server is running smoothly.",
+    healthEndpoint: "/health",
+    apiHealthEndpoint: "/api/health",
+  });
 });
+
+app.get("/health", healthHandler);
+app.get("/api/health", healthHandler);
 
 app.use("/api/bookings", bookingsRouter);
 app.use("/api/portfolio", portfolioRouter);
@@ -76,6 +115,7 @@ app.use("/api/enquiries", enquiriesRouter);
 app.use("/api/instagram-posts", instagramPostsRouter);
 app.use("/api/instagram", instagramRouter);
 app.use("/api/uploads", uploadsRouter);
+app.use("/api/auth", authRouter);
 
 app.use((_req, res) => {
   res.status(404).json({ error: "Not found" });
